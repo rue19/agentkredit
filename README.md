@@ -463,7 +463,7 @@ node index.js --claim-type successRate --log actions.json --threshold 70 --count
 ### Setup
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/agentkredit.git
+git clone https://github.com/rue19/agentkredit.git
 cd agentkredit
 npm install
 ```
