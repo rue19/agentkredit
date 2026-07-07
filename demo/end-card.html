@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>AgentKredit — End Card</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0a0a0a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 40%, rgba(0, 212, 170, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 30% 70%, rgba(0, 100, 255, 0.03) 0%, transparent 50%);
+  }
+
+  /* Grid pattern */
+  body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .logo-mark {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 32px;
+    background: linear-gradient(135deg, #00D4AA, #00A882);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    font-weight: 800;
+    color: #0a0a0a;
+    box-shadow: 0 0 50px rgba(0, 212, 170, 0.3);
+  }
+
+  h1 {
+    font-size: 72px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+
+  .accent-line {
+    width: 160px;
+    height: 3px;
+    background: linear-gradient(90deg, #00D4AA, #00A882);
+    margin: 0 auto 28px;
+    border-radius: 2px;
+  }
+
+  .tagline {
+    font-size: 22px;
+    font-weight: 300;
+    color: #666;
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+
+  .github-card {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 32px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    margin-bottom: 40px;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .github-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(0, 212, 170, 0.3);
+  }
+
+  .github-icon {
+    font-size: 24px;
+  }
+
+  .github-url {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ccc;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .github-url .user {
+    color: #00D4AA;
+  }
+
+  .builder-challenge {
+    font-size: 16px;
+    color: #555;
+    font-weight: 400;
+    margin-bottom: 12px;
+  }
+
+  .builder-challenge strong {
+    color: #00D4AA;
+    font-weight: 600;
+  }
+
+  .handle {
+    font-size: 18px;
+    color: #00D4AA;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* BOT Chain badge bottom-right */
+  .bot-badge {
+    position: absolute;
+    bottom: 48px;
+    right: 80px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    background: rgba(0, 212, 170, 0.08);
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    border-radius: 10px;
+    z-index: 1;
+  }
+
+  .bot-badge .dot {
+    width: 8px;
+    height: 8px;
+    background: #00D4AA;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+  }
+
+  .bot-badge span {
+    font-size: 14px;
+    font-weight: 600;
+    color: #00D4AA;
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="logo-mark">AK</div>
+    <h1>AgentKredit</h1>
+    <div class="accent-line"></div>
+    <p class="tagline">Reputation that spends itself, safely.</p>
+
+    <div class="github-card">
+      <span class="github-icon">📦</span>
+      <span class="github-url">github.com/<span class="user">rue19</span>/agentkredit</span>
+    </div>
+
+    <p class="builder-challenge">Built for the <strong>BOT Chain Builder Challenge</strong></p>
+    <p class="handle">@BOTChain_ai</p>
+  </div>
+
+  <div class="bot-badge">
+    <div class="dot"></div>
+    <span>BOT Chain</span>
+  </div>
+</body>
+</html>

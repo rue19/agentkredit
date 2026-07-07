@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>AgentKredit — Title Card</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0a0a0a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Subtle mesh gradient background */
+  body::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(0, 212, 170, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, rgba(0, 100, 255, 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(0, 212, 170, 0.03) 0%, transparent 50%);
+    z-index: 0;
+  }
+
+  /* Grid pattern overlay */
+  body::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 60px 60px;
+    z-index: 0;
+  }
+
+  .content {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+  }
+
+  .logo-mark {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 40px;
+    background: linear-gradient(135deg, #00D4AA, #00A882);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: 800;
+    color: #0a0a0a;
+    box-shadow: 0 0 60px rgba(0, 212, 170, 0.3);
+  }
+
+  h1 {
+    font-size: 96px;
+    font-weight: 800;
+    color: #ffffff;
+    letter-spacing: -3px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+
+  .accent-line {
+    width: 200px;
+    height: 3px;
+    background: linear-gradient(90deg, #00D4AA, #00A882);
+    margin: 0 auto 32px;
+    border-radius: 2px;
+  }
+
+  .tagline {
+    font-size: 28px;
+    font-weight: 300;
+    color: #666;
+    letter-spacing: 0.5px;
+  }
+
+  .badge {
+    position: absolute;
+    bottom: 60px;
+    right: 80px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 12px;
+    color: #00D4AA;
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  .badge-dot {
+    width: 8px;
+    height: 8px;
+    background: #00D4AA;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 212, 170, 0.5);
+  }
+</style>
+</head>
+<body>
+  <div class="content">
+    <div class="logo-mark">AK</div>
+    <h1>AgentKredit</h1>
+    <div class="accent-line"></div>
+    <p class="tagline">On-chain credit enforcement for AI agents</p>
+  </div>
+  <div class="badge">
+    <div class="badge-dot"></div>
+    Built for BOT Chain
+  </div>
+</body>
+</html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>BOTScan Explorer — AgentKredit Deployment</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #f8f9fa;
+    font-family: 'Inter', -apple-system, sans-serif;
+    overflow: hidden;
+  }
+
+  /* Top nav bar */
+  .nav {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 0 40px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .nav-left {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .nav-logo {
+    font-size: 18px;
+    font-weight: 700;
+    color: #111;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .nav-logo .dot {
+    width: 8px;
+    height: 8px;
+    background: #00D4AA;
+    border-radius: 50%;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: #666;
+    text-decoration: none;
+    font-weight: 500;
+  }
+
+  .nav-links a.active {
+    color: #111;
+  }
+
+  .search-bar {
+    display: flex;
+    align-items: center;
+    background: #f3f4f6;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 8px 16px;
+    width: 480px;
+  }
+
+  .search-bar input {
+    border: none;
+    background: none;
+    font-size: 13px;
+    color: #333;
+    width: 100%;
+    outline: none;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .search-bar .placeholder {
+    color: #999;
+  }
+
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+    color: #666;
+  }
+
+  .nav-right .chain-badge {
+    background: #ecfdf5;
+    color: #059669;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  /* Main content */
+  .main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 40px;
+  }
+
+  /* Tx header */
+  .tx-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+  }
+
+  .tx-header h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #111;
+  }
+
+  .tx-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #ecfdf5;
+    color: #059669;
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+
+  .tx-status .check {
+    font-size: 16px;
+  }
+
+  /* Card */
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 24px;
+  }
+
+  .card-header {
+    padding: 16px 24px;
+    border-bottom: 1px solid #f3f4f6;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  /* Table rows */
+  .row {
+    display: flex;
+    padding: 14px 24px;
+    border-bottom: 1px solid #f3f4f6;
+    align-items: center;
+  }
+
+  .row:last-child {
+    border-bottom: none;
+  }
+
+  .row-label {
+    width: 200px;
+    font-size: 13px;
+    color: #888;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .row-value {
+    font-size: 14px;
+    color: #111;
+    font-family: 'JetBrains Mono', monospace;
+    word-break: break-all;
+  }
+
+  .row-value.mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: #2563eb;
+  }
+
+  .row-value .method {
+    color: #111;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  .row-value .tag {
+    display: inline-block;
+    background: #f3f4f6;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #666;
+    margin-left: 8px;
+  }
+
+  /* Contract deployments section */
+  .deploy-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    padding: 20px 24px;
+  }
+
+  .deploy-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #f3f4f6;
+  }
+
+  .deploy-item .status {
+    width: 24px;
+    height: 24px;
+    background: #ecfdf5;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #059669;
+    font-size: 14px;
+    flex-shrink: 0;
+  }
+
+  .deploy-item .info {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .deploy-item .name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #111;
+  }
+
+  .deploy-item .addr {
+    font-size: 12px;
+    color: #2563eb;
+    font-family: 'JetBrains Mono', monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+</style>
+</head>
+<body>
+  <div class="nav">
+    <div class="nav-left">
+      <div class="nav-logo"><div class="dot"></div> BOTScan</div>
+      <div class="nav-links">
+        <a href="#">Transactions</a>
+        <a href="#" class="active">Contracts</a>
+        <a href="#">Tokens</a>
+        <a href="#">Blocks</a>
+      </div>
+    </div>
+    <div class="search-bar">
+      <input type="text" value="0xa2dbbf9c9346c23beeb1d2b6634801b23e8c6ca4fa32e2ab1aa52247a2b03c40" readonly>
+    </div>
+    <div class="nav-right">
+      <span class="chain-badge">BOT Chain Testnet</span>
+      <span>Block: 1,527,712</span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="tx-header">
+      <h1>Transaction Details</h1>
+      <div class="tx-status"><span class="check">✓</span> Success</div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Overview</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="row-label">Tx Hash</div>
+          <div class="row-value mono">0xa2dbbf9c9346c23beeb1d2b6634801b23e8c6ca4fa32e2ab1aa52247a2b03c40</div>
+        </div>
+        <div class="row">
+          <div class="row-label">Status</div>
+          <div class="row-value"><span style="color:#059669;font-weight:600;">✓ Success</span></div>
+        </div>
+        <div class="row">
+          <div class="row-label">Block</div>
+          <div class="row-value mono" style="color:#2563eb;">1,527,712</div>
+        </div>
+        <div class="row">
+          <div class="row-label">Timestamp</div>
+          <div class="row-value">2026-07-07 14:32:05 UTC</div>
+        </div>
+        <div class="row">
+          <div class="row-label">From</div>
+          <div class="row-value mono" style="color:#2563eb;">0x1a7503E5dEec5bbcbC51265E0923B2580744BC0a</div>
+        </div>
+        <div class="row">
+          <div class="row-label">To</div>
+          <div class="row-value">
+            <span style="color:#2563eb;" class="mono">LiquidityPool</span>
+            <span class="tag">Contract</span>
+            <span class="mono" style="color:#888;font-size:12px;margin-left:4px;">0x5FbDB2315678afecb367f032d93F642f64180aa3</span>
+          </div>
+        </div>
+        <div class="row">
+          <div class="row-label">Method</div>
+          <div class="row-value"><span class="method">setAuthorizedCaller(address)</span></div>
+        </div>
+        <div class="row">
+          <div class="row-label">Value</div>
+          <div class="row-value">0 ETH</div>
+        </div>
+        <div class="row">
+          <div class="row-label">Gas Used</div>
+          <div class="row-value">46,832 <span class="tag">0.89%</span></div>
+        </div>
+        <div class="row">
+          <div class="row-label">Gas Price</div>
+          <div class="row-value">1 Gwei</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header">Contract Deployments — AgentKredit Phase 3</div>
+      <div class="deploy-grid">
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">LiquidityPool</div>
+            <div class="addr">0x5FbDB2315678afecb367f032d93F642f64180aa3</div>
+          </div>
+        </div>
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">SessionKeyManager</div>
+            <div class="addr">0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512</div>
+          </div>
+        </div>
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">ZKBehaviorVerifier</div>
+            <div class="addr">0x5FC8d32690cc91D4c39d9d3abcBD16989F875707</div>
+          </div>
+        </div>
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">CreditLine</div>
+            <div class="addr">0xa513E6E4b8f2a923D98304ec87F64353C4D5C853</div>
+          </div>
+        </div>
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">PolicyVault</div>
+            <div class="addr">0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6</div>
+          </div>
+        </div>
+        <div class="deploy-item">
+          <div class="status">✓</div>
+          <div class="info">
+            <div class="name">ReputationRegistry</div>
+            <div class="addr">0x0165878A594ca255338adfa4d48449f69242Eb8F</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>Public Score = Farmable</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0a0a0a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    align-items: center;
+    padding: 0 120px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255, 68, 68, 0.04) 0%, transparent 60%);
+  }
+
+  .left {
+    flex: 1.2;
+    position: relative;
+    z-index: 1;
+  }
+
+  .problem-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #FF4444;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    margin-bottom: 24px;
+  }
+
+  h2 {
+    font-size: 72px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+
+  h2 .red {
+    color: #FF4444;
+  }
+
+  .stat {
+    font-size: 20px;
+    color: #888;
+    font-weight: 400;
+    line-height: 1.6;
+    max-width: 500px;
+  }
+
+  .stat strong {
+    color: #FF4444;
+    font-weight: 600;
+  }
+
+  .right {
+    flex: 0.8;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    z-index: 1;
+  }
+
+  .leaderboard {
+    width: 480px;
+    background: #111111;
+    border: 1px solid #222;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  }
+
+  .lb-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid #222;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .lb-header span {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .lb-header .icon {
+    font-size: 20px;
+  }
+
+  .lb-row {
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+
+  .lb-row:last-child {
+    border-bottom: none;
+  }
+
+  .lb-rank {
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+    width: 20px;
+    text-align: center;
+  }
+
+  .lb-name {
+    flex: 1;
+    font-size: 15px;
+    font-weight: 500;
+    color: #ccc;
+  }
+
+  .lb-score {
+    font-size: 14px;
+    font-weight: 600;
+    color: #888;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .lb-row.flagged {
+    background: rgba(255, 68, 68, 0.08);
+    border-left: 3px solid #FF4444;
+    position: relative;
+  }
+
+  .lb-row.flagged .lb-name {
+    color: #FF4444;
+  }
+
+  .lb-row.flagged .lb-score {
+    color: #FF4444;
+  }
+
+  .flag-badge {
+    position: absolute;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 68, 68, 0.15);
+    border: 1px solid rgba(255, 68, 68, 0.3);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #FF4444;
+  }
+
+  .annotation {
+    position: absolute;
+    left: -80px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .annotation-line {
+    width: 40px;
+    height: 2px;
+    background: #FF4444;
+  }
+
+  .annotation-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #FF4444;
+    white-space: nowrap;
+    background: rgba(255, 68, 68, 0.1);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+    <p class="problem-label">The Problem</p>
+    <h2>Public score<br>= <span class="red">farmable</span></h2>
+    <p class="stat">
+      One agent faked <strong>103 pull requests</strong> in days<br>
+      to farm a fake reputation score.
+    </p>
+  </div>
+  <div class="right">
+    <div class="leaderboard">
+      <div class="lb-header">
+        <span class="icon">🏆</span>
+        <span>Agent Leaderboard</span>
+      </div>
+      <div class="lb-row">
+        <span class="lb-rank">1</span>
+        <span class="lb-name">TradingBot-X</span>
+        <span class="lb-score">847</span>
+      </div>
+      <div class="lb-row">
+        <span class="lb-rank">2</span>
+        <span class="lb-name">DePIN-Validator</span>
+        <span class="lb-score">723</span>
+      </div>
+      <div class="lb-row flagged" style="position: relative;">
+        <span class="lb-rank">3</span>
+        <span class="lb-name">FakeAgent-99</span>
+        <span class="lb-score">691</span>
+        <div class="flag-badge">🚩 103 fake PRs</div>
+      </div>
+      <div class="lb-row">
+        <span class="lb-rank">4</span>
+        <span class="lb-name">TreasuryBot</span>
+        <span class="lb-score">512</span>
+      </div>
+      <div class="lb-row">
+        <span class="lb-rank">5</span>
+        <span class="lb-name">DataAgent-7</span>
+        <span class="lb-score">488</span>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

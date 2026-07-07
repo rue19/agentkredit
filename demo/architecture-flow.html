@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>AgentKredit Architecture Flow</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0a0a0a;
+    font-family: 'Inter', -apple-system, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 50% 30%, rgba(0, 212, 170, 0.04) 0%, transparent 50%);
+  }
+
+  .header {
+    text-align: center;
+    margin-bottom: 60px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .header h2 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -1px;
+  }
+
+  .header p {
+    font-size: 18px;
+    color: #666;
+    margin-top: 8px;
+  }
+
+  .flow {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 280px;
+    position: relative;
+  }
+
+  .step-box {
+    width: 240px;
+    height: 180px;
+    background: #111;
+    border: 1px solid #222;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    position: relative;
+    transition: all 0.5s ease;
+  }
+
+  .step-box .icon {
+    font-size: 40px;
+    line-height: 1;
+  }
+
+  .step-box .label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ccc;
+    text-align: center;
+  }
+
+  .step-box .sub {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
+    padding: 0 16px;
+    line-height: 1.4;
+  }
+
+  /* Glow state for each step */
+  .step.active .step-box {
+    border-color: #00D4AA;
+    box-shadow: 0 0 40px rgba(0, 212, 170, 0.15), inset 0 0 30px rgba(0, 212, 170, 0.05);
+  }
+
+  .step.active .step-box .label {
+    color: #00D4AA;
+  }
+
+  .step-num {
+    width: 32px;
+    height: 32px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+    color: #666;
+    margin-bottom: 16px;
+  }
+
+  .step.active .step-num {
+    background: #00D4AA;
+    border-color: #00D4AA;
+    color: #0a0a0a;
+  }
+
+  .arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 180px;
+    color: #333;
+    font-size: 28px;
+  }
+
+  .step.active + .step .arrow,
+  .step.active .arrow {
+    color: #00D4AA;
+  }
+
+  .caption-bar {
+    margin-top: 60px;
+    display: flex;
+    gap: 40px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .caption {
+    font-size: 14px;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .caption .num {
+    width: 20px;
+    height: 20px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: #666;
+  }
+
+  .caption.active {
+    color: #00D4AA;
+  }
+
+  .caption.active .num {
+    background: #00D4AA;
+    border-color: #00D4AA;
+    color: #0a0a0a;
+  }
+
+  /* Highlight animation for video */
+  @keyframes pulse-glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(0, 212, 170, 0.1); }
+    50% { box-shadow: 0 0 50px rgba(0, 212, 170, 0.25); }
+  }
+
+  .step.active .step-box {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+</style>
+</head>
+<body>
+  <div class="header">
+    <h2>How AgentKredit Works</h2>
+    <p>From action to autonomous spending — in 5 steps</p>
+  </div>
+
+  <div class="flow">
+    <div class="step active">
+      <div class="step-num">1</div>
+      <div class="step-box">
+        <div class="icon">🤖</div>
+        <div class="label">Agent Acts</div>
+        <div class="sub">Executes trades, validates data, performs services</div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-box">
+        <div class="icon">✍️</div>
+        <div class="label">Attestation</div>
+        <div class="sub">Off-chain oracles sign EIP-712 attestations</div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-box">
+        <div class="icon">📊</div>
+        <div class="label">Reputation</div>
+        <div class="sub">Score + tier assigned on-chain</div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-box">
+        <div class="icon">🔐</div>
+        <div class="label">ZK Proof + Credit</div>
+        <div class="sub">Prove history, get tier-based credit line</div>
+      </div>
+    </div>
+
+    <div class="arrow">→</div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-box">
+        <div class="icon">🏦</div>
+        <div class="label">Policy Vault</div>
+        <div class="sub">Spend within hard on-chain limits</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="caption-bar">
+    <div class="caption active"><div class="num">1</div> Agent acts</div>
+    <div class="caption"><div class="num">2</div> Oracle signs</div>
+    <div class="caption"><div class="num">3</div> Score updated</div>
+    <div class="caption"><div class="num">4</div> ZK proof verifies</div>
+    <div class="caption"><div class="num">5</div> Credit spent safely</div>
+  </div>
+</body>
+</html>

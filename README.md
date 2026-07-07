@@ -524,7 +524,7 @@ npx hardhat run scripts/deploy-phase3.js --network botchainTestnet
 
 | Parameter | Value |
 |-----------|-------|
-| Chain ID | 1891 |
+| Chain ID | 677 |
 | RPC URL | `https://rpc.botchain.ai` |
 | Gas Price | 1 gwei |
 
@@ -550,6 +550,37 @@ Phase 3:
 ```
 
 `deploy-phase3.js` handles steps 3–11 automatically.
+
+---
+
+## Live Demo
+
+### Running the Full Demo
+
+```bash
+# Terminal 1: start local node
+npx hardhat node
+
+# Terminal 2: run the full 10-step demo
+npx hardhat run scripts/demo-credit-flow.js --network localhost
+```
+
+The script deploys all contracts, registers an agent, earns reputation, requests credit, generates a ZK proof, executes a spend, and repays — the entire lifecycle in ~10 seconds.
+
+### Demo Video Assets
+
+The `demo/` directory contains 6 HTML pages designed for screen recording (1:08 video):
+
+| File | Timestamp | Description |
+|------|-----------|-------------|
+| `demo/title-card.html` | 0:00–0:05 | AgentKredit wordmark, "Reputation that spends itself, safely.", BOT Chain Builder Challenge badge |
+| `demo/farmable-graphic.html` | 0:05–0:15 | "Public score = farmable" with red-flagged leaderboard showing FakeAgent-99 |
+| `demo/architecture-flow.html` | 0:15–0:28 | 5-step animated flow: Agent → Attestation → Reputation → ZK Proof + Credit → Policy Vault |
+| `demo/mock-explorer.html` | 0:28–0:50 | BOTScan-style explorer with real deployed tx hash + all contract addresses |
+| `demo/proof-terminal.html` | 0:40–0:48 | Terminal mockup: "Generating ZK proof... 100 actions... success-rate ≥ 80%... VALID" |
+| `demo/end-card.html` | 0:50–1:08 | GitHub link, BOT Chain badge, @BOTChain_ai |
+
+Open any HTML in a browser to view the pitch graphics. Each is self-contained (inline CSS/JS, no external deps).
 
 ---
 
@@ -632,7 +663,15 @@ agentkredit/
 │   ├── deploy-session-key-manager.js
 │   ├── deploy-credit-line.js
 │   ├── deploy-policy-vault.js
-│   └── deploy-phase3.js           # Unified Phase 3 orchestrator
+│   ├── deploy-phase3.js           # Unified Phase 3 orchestrator
+│   └── demo-credit-flow.js        # Full 10-step demo (deploy → earn → borrow → spend → repay)
+├── demo/
+│   ├── title-card.html            # Video title card
+│   ├── farmable-graphic.html      # "Public score = farmable" pitch graphic
+│   ├── architecture-flow.html     # 5-step animated flow diagram
+│   ├── mock-explorer.html         # BOTScan explorer mock with real tx hash
+│   ├── proof-terminal.html        # ZK proof generation terminal mockup
+│   └── end-card.html              # Video end card (GitHub + BOT Chain badge)
 ├── services/
 │   ├── attestation-oracle/        # Off-chain attestation service
 │   └── zk-prover/                 # Local ZK proof generation

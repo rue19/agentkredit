@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920, height=1080">
+<title>ZK Proof Generation</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    width: 1920px;
+    height: 1080px;
+    background: #0d1117;
+    font-family: 'JetBrains Mono', monospace;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .terminal {
+    width: 1100px;
+    background: #161b22;
+    border-radius: 12px;
+    border: 1px solid #30363d;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    background: #1c2128;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-bottom: 1px solid #30363d;
+  }
+
+  .terminal-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+  }
+
+  .terminal-dot.red { background: #ff5f57; }
+  .terminal-dot.yellow { background: #febc2e; }
+  .terminal-dot.green { background: #28c840; }
+
+  .terminal-title {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    color: #8b949e;
+  }
+
+  .terminal-body {
+    padding: 24px 32px;
+    font-size: 14px;
+    line-height: 1.8;
+    color: #c9d1d9;
+  }
+
+  .prompt {
+    color: #7ee787;
+  }
+
+  .cmd {
+    color: #c9d1d9;
+  }
+
+  .flag {
+    color: #79c0ff;
+  }
+
+  .success {
+    color: #7ee787;
+  }
+
+  .dim {
+    color: #484f58;
+  }
+
+  .yellow {
+    color: #e3b341;
+  }
+
+  .cyan {
+    color: #56d4dd;
+  }
+
+  .muted {
+    color: #6e7681;
+  }
+
+  .section-gap {
+    height: 8px;
+  }
+</style>
+</head>
+<body>
+  <div class="terminal">
+    <div class="terminal-bar">
+      <div class="terminal-dot red"></div>
+      <div class="terminal-dot yellow"></div>
+      <div class="terminal-dot green"></div>
+      <div class="terminal-title">zk-prover — success-rate circuit</div>
+    </div>
+    <div class="terminal-body">
+      <span class="prompt">$</span> <span class="cmd">node services/zk-prover/index.js \</span><br>
+      <span class="cmd">    --claim-type <span class="flag">successRate</span> \</span><br>
+      <span class="cmd">    --log <span class="flag">demo/actions.json</span> \</span><br>
+      <span class="cmd">    --threshold <span class="flag">70</span> \</span><br>
+      <span class="cmd">    --count <span class="flag">100</span></span><br>
+      <div class="section-gap"></div>
+      <span class="cyan">🧮</span> <span class="success">Building Poseidon hash chain for 100 actions...</span><br>
+      <span class="success">✅</span> Hash chain built: commitmentRoot = <span class="yellow">0x3a7f8b2c...</span><br>
+      <div class="section-gap"></div>
+      <span class="cyan">🔐</span> <span class="success">Generating Groth16 proof (success-rate circuit)...</span><br>
+      <span class="muted">   Constraint count: 52,355</span><br>
+      <span class="muted">   Circuit: success-rate.circom</span><br>
+      <span class="success">   Proof generated in </span><span class="yellow">7.2s</span><br>
+      <div class="section-gap"></div>
+      <span class="cyan">📤</span> <span class="success">Proof components:</span><br>
+      <span class="muted">   pA:</span> [0x2187a4f3..., 0x0c45b821...]<br>
+      <span class="muted">   pB:</span> [[0x1a3f7c..., 0x7b21de...], [0x9c08fa..., 0x4e5690...]]<br>
+      <span class="muted">   pC:</span> [0x6d12ab45..., 0x8f34c789...]<br>
+      <span class="muted">   signals:</span> [<span class="yellow">0x3a7f8b2c...</span>, <span class="yellow">70</span>]<br>
+      <div class="section-gap"></div>
+      <span class="success">✅</span> Proof verified locally<br>
+      <span class="success">✅</span> Ready for on-chain submission<br>
+      <div class="section-gap"></div>
+      <span class="prompt">$</span> <span class="dim">_</span>
+    </div>
+  </div>
+</body>
+</html>
