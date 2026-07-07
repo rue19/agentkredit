@@ -1,0 +1,15 @@
+{
+  "name": "attestation-oracle",
+  "version": "1.0.0",
+  "description": "Off-chain attestation oracle for AgentKredit",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "sign": "node sign-attestation.js"
+  },
+  "dependencies": {
+    "ethers": "^6.0.0",
+    "dotenv": "^17.0.0"
+  }
+}

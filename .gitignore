@@ -1,0 +1,12 @@
+node_modules/
+.env
+coverage/
+coverage.json
+typechain-types/
+cache/
+artifacts/
+broadcast/
+build/
+circuits/*.ptau
+services/zk-prover/node_modules/
+services/attestation-oracle/node_modules/

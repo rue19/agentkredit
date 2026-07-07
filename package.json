@@ -1,0 +1,35 @@
+{
+  "name": "agentkredit",
+  "version": "1.0.0",
+  "description": "On-chain credit enforcement infrastructure for AI agents",
+  "main": "index.js",
+  "scripts": {
+    "compile": "hardhat compile",
+    "test": "hardhat test",
+    "test:gas": "REPORT_GAS=true hardhat test",
+    "deploy:local": "hardhat run scripts/deploy-agent-registry.js --network localhost",
+    "deploy:testnet": "hardhat run scripts/deploy-agent-registry.js --network botchainTestnet",
+    "node": "hardhat node"
+  },
+  "keywords": [
+    "ai-agents",
+    "credit",
+    "zk-proofs",
+    "botchain"
+  ],
+  "author": "",
+  "license": "MIT",
+  "type": "commonjs",
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.6.1",
+    "circomlib": "^2.0.5",
+    "circomlibjs": "^0.1.7",
+    "dotenv": "^17.4.2",
+    "hardhat": "^2.28.6",
+    "snarkjs": "^0.7.6"
+  },
+  "dependencies": {
+    "ethers": "^6.17.0"
+  }
+}
