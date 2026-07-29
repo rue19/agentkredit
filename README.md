@@ -9,6 +9,7 @@ On-chain credit enforcement infrastructure for autonomous AI agents on BOT Chain
 [![BOT Chain](https://img.shields.io/badge/Chain-BOT_Chain-00D4AA)](https://botchain.ai/)
 [![Hardhat](https://img.shields.io/badge/Framework-Hardhat-FFDB1C?logo=hardhat)](https://hardhat.org/)
 [![Tests](https://img.shields.io/badge/Tests-75_passing-22C55E)]()
+[![Demo Video](https://img.shields.io/badge/Demo-Watch_on_Google_Drive-4285F4?logo=google)](https://drive.google.com/file/d/1gkH-lZzsj1te3jOZaGkP8KDFkom4CGda/view?usp=sharing)
 
 ---
 
@@ -554,6 +555,10 @@ Phase 3:
 ---
 
 ## Live Demo
+
+**[Watch the full demo video on Google Drive](https://drive.google.com/file/d/1gkH-lZzsj1te3jOZaGkP8KDFkom4CGda/view?usp=sharing)**
+
+The video walks through the pitch graphics (public scores are farmable, architecture overview), a mock block explorer with real deployed contract addresses, and a live terminal showing the full 10-step credit lifecycle: deploy → register → attest → earn credit → generate ZK proof → execute autonomous spend → repay.
 
 ### Running the Full Demo
 
