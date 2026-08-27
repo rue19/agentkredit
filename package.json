@@ -9,6 +9,7 @@
     "test:gas": "REPORT_GAS=true hardhat test",
     "deploy:local": "hardhat run scripts/deploy-agent-registry.js --network localhost",
     "deploy:testnet": "hardhat run scripts/deploy-agent-registry.js --network botchainTestnet",
+    "deploy:bohr": "hardhat run scripts/deploy-testnet.js --network bohrTestnet",
     "node": "hardhat node"
   },
   "keywords": [
