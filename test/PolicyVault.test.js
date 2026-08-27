@@ -57,6 +57,7 @@ describe("PolicyVault", function () {
     await vault.waitForDeployment();
 
     await pool.setAuthorizedCaller(await creditLine.getAddress());
+    await creditLine.setPolicyVault(await vault.getAddress());
 
     const agentId = ethers.keccak256(ethers.toUtf8Bytes("agent-1"));
     await agentRegistry.connect(agent1).registerAgent(agentId, { value: ethers.parseEther("0.1") });

@@ -83,6 +83,7 @@ describe("E2E Credit Flow", function () {
 
     // Wire up
     await pool.setAuthorizedCaller(await creditLine.getAddress());
+    await creditLine.setPolicyVault(await vault.getAddress());
 
     return {
       pool, agentRegistry, repRegistry, zkVerifier, skm, creditLine, vault,

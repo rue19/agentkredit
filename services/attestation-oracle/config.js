@@ -8,7 +8,7 @@ config({ path: join(__dirname, ".env") });
 export const RPC_URL = process.env.RPC_URL || "https://rpc.botchaintestnet.ai";
 export const ATTESTER_PRIVATE_KEY = process.env.ATTESTER_PRIVATE_KEY;
 export const AGENT_REGISTRY_ADDRESS = process.env.AGENT_REGISTRY_ADDRESS;
-export const REPUTATION_REGISTRY_ADDRESS = process.env.REPUTANCE_REGISTRY_ADDRESS;
+export const REPUTATION_REGISTRY_ADDRESS = process.env.REPUTATION_REGISTRY_ADDRESS;
 export const POLL_INTERVAL_MS = parseInt(process.env.POLL_INTERVAL_MS || "5000");
 export const MIN_POSITIVE_DELTA = parseInt(process.env.MIN_POSITIVE_DELTA || "5");
 export const MAX_POSITIVE_DELTA = parseInt(process.env.MAX_POSITIVE_DELTA || "20");

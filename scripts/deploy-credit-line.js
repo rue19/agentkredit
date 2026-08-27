@@ -46,6 +46,13 @@ async function main() {
   const address = await creditLine.getAddress();
   console.log(`CreditLine deployed to: ${address}`);
 
+  // Optionally set PolicyVault if address is available
+  const policyVaultAddress = process.env.POLICY_VAULT_ADDRESS;
+  if (policyVaultAddress) {
+    await creditLine.setPolicyVault(policyVaultAddress);
+    console.log(`  CreditLine.setPolicyVault → ${policyVaultAddress}`);
+  }
+
   if (hre.network.name !== "hardhat" && hre.network.name !== "localhost") {
     console.log("Waiting for block confirmation...");
     await creditLine.deploymentTransaction().wait(5);

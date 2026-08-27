@@ -87,6 +87,9 @@ async function main() {
   await pool.setAuthorizedCaller(addresses.creditLine);
   console.log("  LiquidityPool.setAuthorizedCaller → CreditLine");
 
+  await creditLine.setPolicyVault(addresses.policyVault);
+  console.log("  CreditLine.setPolicyVault → PolicyVault");
+
   // Summary
   console.log("\n=== Phase 3 Deployment Complete ===");
   console.log(JSON.stringify(addresses, null, 2));

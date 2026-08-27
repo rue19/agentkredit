@@ -49,6 +49,7 @@ describe("CreditLine", function () {
 
     // Setup
     await pool.setAuthorizedCaller(await creditLine.getAddress());
+    await creditLine.setPolicyVault(other.address);
 
     // Register agent
     const agentId = ethers.keccak256(ethers.toUtf8Bytes("agent-1"));
@@ -89,6 +90,18 @@ describe("CreditLine", function () {
       expect(await creditLine.tierScoreThresholds(2)).to.equal(500);
       expect(await creditLine.tierScoreThresholds(3)).to.equal(1000);
     });
+
+    it("should set policy vault address", async function () {
+      const { creditLine, other } = await loadFixture(deployFixture);
+      expect(await creditLine.policyVault()).to.equal(other.address);
+    });
+
+    it("should only allow owner to set policy vault", async function () {
+      const { creditLine, other, agent1 } = await loadFixture(deployFixture);
+      await expect(
+        creditLine.connect(agent1).setPolicyVault(agent1.address)
+      ).to.be.revertedWithCustomError(creditLine, "OwnableUnauthorizedAccount");
+    });
   });
 
   describe("Credit Line Request", function () {
@@ -115,36 +128,45 @@ describe("CreditLine", function () {
   });
 
   describe("Drawdown", function () {
-    it("should allow drawdown within credit limit", async function () {
-      const { creditLine, agent1, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
+    it("should allow drawdown from authorized policy vault", async function () {
+      const { creditLine, other, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
 
       await expect(
-        creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("100"))
+        creditLine.connect(other).drawdown(agentId, ethers.parseEther("100"))
       ).to.emit(creditLine, "CreditDrawnDown");
 
       const credit = await creditLine.credits(agentId);
       expect(credit.drawdown).to.equal(ethers.parseEther("100"));
     });
 
-    it("should reject drawdown exceeding credit limit", async function () {
+    it("should reject drawdown from unauthorized address", async function () {
       const { creditLine, agent1, agentId } = await loadFixture(deployFixture);
       await creditLine.connect(agent1).requestCreditLine(agentId);
 
       await expect(
-        creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("2000"))
+        creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("100"))
+      ).to.be.revertedWithCustomError(creditLine, "OnlyPolicyVault");
+    });
+
+    it("should reject drawdown exceeding credit limit", async function () {
+      const { creditLine, other, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
+
+      await expect(
+        creditLine.connect(other).drawdown(agentId, ethers.parseEther("2000"))
       ).to.be.revertedWithCustomError(creditLine, "CreditLimitExceeded");
     });
   });
 
   describe("Repayment", function () {
     it("should allow anyone to repay credit", async function () {
-      const { creditLine, agent1, other, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
-      await creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("500"));
+      const { creditLine, other, agent1, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
+      await creditLine.connect(other).drawdown(agentId, ethers.parseEther("500"));
 
       await expect(
-        creditLine.connect(other).repay(agentId, ethers.parseEther("200"), { value: ethers.parseEther("200") })
+        creditLine.connect(agent1).repay(agentId, ethers.parseEther("200"), { value: ethers.parseEther("200") })
       ).to.emit(creditLine, "CreditRepaid");
 
       const credit = await creditLine.credits(agentId);
@@ -152,37 +174,37 @@ describe("CreditLine", function () {
     });
 
     it("should reject repayment exceeding outstanding amount", async function () {
-      const { creditLine, agent1, other, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
-      await creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("100"));
+      const { creditLine, other, agent1, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
+      await creditLine.connect(other).drawdown(agentId, ethers.parseEther("100"));
 
       await expect(
-        creditLine.connect(other).repay(agentId, ethers.parseEther("200"), { value: ethers.parseEther("200") })
+        creditLine.connect(agent1).repay(agentId, ethers.parseEther("200"), { value: ethers.parseEther("200") })
       ).to.be.revertedWithCustomError(creditLine, "InsufficientCredit");
     });
 
     it("should reject zero repayment", async function () {
-      const { creditLine, agent1, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
+      const { creditLine, other, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
 
       await expect(
-        creditLine.connect(agent1).repay(agentId, 0, { value: 0 })
+        creditLine.connect(other).repay(agentId, 0, { value: 0 })
       ).to.be.revertedWithCustomError(creditLine, "ZeroAmount");
     });
   });
 
   describe("View Functions", function () {
     it("should return correct remaining credit", async function () {
-      const { creditLine, agent1, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
-      await creditLine.connect(agent1).drawdown(agentId, ethers.parseEther("300"));
+      const { creditLine, other, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
+      await creditLine.connect(other).drawdown(agentId, ethers.parseEther("300"));
 
       expect(await creditLine.getRemainingCredit(agentId)).to.equal(ethers.parseEther("700"));
     });
 
     it("should return true when credit available", async function () {
-      const { creditLine, agent1, agentId } = await loadFixture(deployFixture);
-      await creditLine.connect(agent1).requestCreditLine(agentId);
+      const { creditLine, other, agentId } = await loadFixture(deployFixture);
+      await creditLine.connect(other).requestCreditLine(agentId);
 
       expect(await creditLine.hasRemainingCredit(agentId)).to.be.true;
     });

@@ -38,6 +38,7 @@ contract CreditLine is Ownable {
     ILiquidityPool public liquidityPool;
     IReputationRegistry public reputationRegistry;
     IZKBehaviorVerifier public zkVerifier;
+    address public policyVault;
 
     // Tier thresholds
     mapping(uint256 => uint256) public tierLimits;
@@ -65,6 +66,7 @@ contract CreditLine is Ownable {
     error ZeroAmount();
     error ProofFailed();
     error InsufficientCredit();
+    error OnlyPolicyVault();
 
     constructor(
         address _liquidityPool,
@@ -84,6 +86,11 @@ contract CreditLine is Ownable {
         tierScoreThresholds[1] = 100;
         tierScoreThresholds[2] = 500;
         tierScoreThresholds[3] = 1000;
+    }
+
+    /// @notice Set the authorized PolicyVault address (owner only)
+    function setPolicyVault(address _policyVault) external onlyOwner {
+        policyVault = _policyVault;
     }
 
     /// @notice Agent requests a credit line (requires reputation attestation)
@@ -115,6 +122,7 @@ contract CreditLine is Ownable {
 
     /// @notice Draw down credit (called by PolicyVault only)
     function drawdown(bytes32 agentId, uint256 amount) external {
+        if (msg.sender != policyVault) revert OnlyPolicyVault();
         Credit storage credit = credits[agentId];
         if (credit.status != Status.Active) revert CreditNotActive();
         if (block.timestamp > credit.expiry) revert CreditNotActive();

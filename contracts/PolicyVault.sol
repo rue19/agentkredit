@@ -2,6 +2,7 @@
 pragma solidity ^0.8.25;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 interface ISessionKeyManager {
     function isActiveSession(bytes32 sessionId) external view returns (bool);
@@ -42,7 +43,7 @@ interface ILiquidityPool {
 /// @title PolicyVault
 /// @notice Enforces spending policies for AI agents via session keys + ZK proofs
 /// @dev All spend operations route through here
-contract PolicyVault is Ownable {
+contract PolicyVault is Ownable, ReentrancyGuard {
     struct SpendPolicy {
         uint256 dailyLimit;    // max spend per day (UTC midnight reset)
         uint256 dailyUsed;     // amount spent today
@@ -119,7 +120,7 @@ contract PolicyVault is Ownable {
         uint8 claimType,
         bytes calldata proof,
         bytes32[] calldata publicInputs
-    ) external payable {
+    ) external payable nonReentrant {
         if (amount == 0) revert InvalidAmount();
 
         // 1. Validate session key

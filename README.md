@@ -8,8 +8,27 @@ On-chain credit enforcement infrastructure for autonomous AI agents on BOT Chain
 [![Circom](https://img.shields.io/badge/Circuit-Circom_2.2.3-8B5CF6)](https://docs.circom.io/)
 [![BOT Chain](https://img.shields.io/badge/Chain-BOT_Chain-00D4AA)](https://botchain.ai/)
 [![Hardhat](https://img.shields.io/badge/Framework-Hardhat-FFDB1C?logo=hardhat)](https://hardhat.org/)
-[![Tests](https://img.shields.io/badge/Tests-75_passing-22C55E)]()
+[![Tests](https://img.shields.io/badge/Tests-78_passing-22C55E)]()
 [![Demo Video](https://img.shields.io/badge/Demo-Watch_on_Google_Drive-4285F4?logo=google)](https://drive.google.com/file/d/1gkH-lZzsj1te3jOZaGkP8KDFkom4CGda/view?usp=sharing)
+
+---
+
+## Recent Changes
+
+### Security Fixes (August 2026)
+- **ReentrancyGuard** added to `PolicyVault.executeSpend()` to prevent reentrancy on external calls
+- **Access control** added to `CreditLine.drawdown()` — now restricted to PolicyVault only (was previously callable by anyone)
+- **Typo fix** in attestation oracle config: `REPUTANCE_REGISTRY_ADDRESS` → `REPUTATION_REGISTRY_ADDRESS`
+
+### Testnet Deployment (August 2026)
+- Added **Bohr testnet** network config (chain ID 968, `rpc.bohr.life`, `scan.bohr.life`)
+- Created **unified deploy-testnet.js** script for one-shot deployment of all 10 contracts
+- Added etherscan config for contract verification on `scan.bohr.life`
+
+### ZK Circuit Build (August 2026)
+- All 3 circuits compiled and trusted setup completed (success-rate, action-count, zero-violations)
+- Solidity verifiers regenerated to match new zkeys
+- All 78 tests now passing (previously 5 ZK tests were failing due to missing build artifacts)
 
 ---
 
@@ -121,6 +140,7 @@ Every unit of credit is autonomously usable but provably bounded. The agent can 
 | `ZKBehaviorVerifier.sol` | ✅ | Domain wrapper, nullifier replay protection, 3 claim types |
 | ZK Prover Service | ✅ | Local proof generation, Poseidon hash chain builder, CLI |
 | Tests (8) | ✅ | 4 ZK integration + circuit constraint verification |
+| Circuit build | ✅ | `build/` artifacts compiled (gitignored, regenerable via circom)
 
 ### Phase 3 — Credit + Policy Enforcement ✅
 
@@ -128,10 +148,10 @@ Every unit of credit is autonomously usable but provably bounded. The agent can 
 |-----------|--------|-------------|
 | `LiquidityPool.sol` | ✅ | ETH pool, deposit/withdraw, authorized caller, utilization tracking |
 | `SessionKeyManager.sol` | ✅ | EIP-712 scoped session keys, grant/revoke, nonce replay protection |
-| `CreditLine.sol` | ✅ | Tier-based credit (1K/10K/100K BOT), drawdown, repay, 30-day expiry |
-| `PolicyVault.sol` | ✅ | Daily limits, target/selector whitelists, ZK proof verification, credit drawdown |
-| Tests (45) | ✅ | 14 LiquidityPool + 8 SessionKeyManager + 11 CreditLine + 7 PolicyVault + 1 E2E |
-| Deploy scripts | ✅ | 7 scripts including unified `deploy-phase3.js` orchestrator |
+| `CreditLine.sol` | ✅ | Tier-based credit (1K/10K/100K BOT), drawdown (PolicyVault only), repay, 30-day expiry |
+| `PolicyVault.sol` | ✅ | Daily limits, target/selector whitelists, ZK proof verification, reentrancy-protected |
+| Tests (48) | ✅ | 14 LiquidityPool + 8 SessionKeyManager + 14 CreditLine + 7 PolicyVault + 1 E2E + 4 ZK |
+| Deploy scripts | ✅ | 8 scripts including unified `deploy-testnet.js` orchestrator |
 
 ### Phase 4 — Surface 🚧
 
@@ -140,7 +160,7 @@ Every unit of credit is autonomously usable but provably bounded. The agent can 
 | Event indexer | 🔲 | Listen to on-chain events, feed dashboard |
 | Dashboard | 🔲 | Next.js + wagmi/viem: leaderboard, agent detail, live proof demo |
 | Agent SDK | 🔲 | TypeScript/Python client for agents to interact with contracts |
-| Testnet deployment | 🔲 | Deploy to BOT Chain Testnet (Chain ID 513100) |
+| Testnet deployment | 🟡 | Config ready (`bohrTestnet`, chain ID 968), unified deploy script, pending wallet setup |
 
 ---
 
@@ -476,7 +496,7 @@ npx hardhat compile
 npx hardhat test
 ```
 
-Expected: **75 tests passing** across 9 test files.
+Expected: **78 tests passing** across 9 test files.
 
 ### Local Development
 
@@ -498,9 +518,21 @@ npx hardhat run scripts/deploy-phase3.js --network localhost
 |----------|-------------|---------|
 | `DEPLOYER_PRIVATE_KEY` | Private key of deployer account | `0xabc...` |
 | `REPUTATION_REGISTRY_ADDRESS` | Deployed ReputationRegistry (Phase 1) | `0xdef...` |
+| `INITIAL_ATTESTER_ADDRESS` | Address authorized to sign attestations | `0xabc...` |
+| `BOHR_EXPLORER_API_KEY` | Block explorer API key for verification | `...` |
 | `REPORT_GAS` | Enable gas reporting (optional) | `true` |
 
-### BOT Chain Testnet
+### BOT Chain Testnet (Bohr)
+
+| Parameter | Value |
+|-----------|-------|
+| Chain ID | 968 |
+| RPC URL | `https://rpc.bohr.life` |
+| Gas Price | 1 gwei |
+| Explorer | `https://scan.bohr.life` |
+| Faucet | `https://faucet.botchain.ai/basic` (10 tBOT/day) |
+
+### BOT Chain Testnet (Legacy)
 
 | Parameter | Value |
 |-----------|-------|
@@ -510,16 +542,23 @@ npx hardhat run scripts/deploy-phase3.js --network localhost
 | Explorer | `https://explorer.botchaintestnet.ai` |
 | Faucet | `https://faucet.botchain.ai/basic` (10 tBOT/day) |
 
+### Deployment
+
 ```bash
-# Deploy Phase 1 first (AgentRegistry + ReputationRegistry)
-npx hardhat run scripts/deploy-agent-registry.js --network botchainTestnet
-npx hardhat run scripts/deploy-reputation-registry.js --network botchainTestnet
+# 1. Set up .env (see .env.example)
+cp .env.example .env
+# Fill in DEPLOYER_PRIVATE_KEY and INITIAL_ATTESTER_ADDRESS
 
-# Set REPUTATION_REGISTRY_ADDRESS in .env
+# 2. Claim tBOT from faucet (10 tBOT/day, plan for 2-3 claims)
 
-# Deploy Phase 3 (all credit + policy contracts)
-npx hardhat run scripts/deploy-phase3.js --network botchainTestnet
+# 3. Deploy all contracts to testnet
+npx hardhat run scripts/deploy-testnet.js --network bohrTestnet
+
+# 4. Verify each contract on scan.bohr.life
+npx hardhat verify --network bohrTestnet <CONTRACT_ADDRESS> <CONSTRUCTOR_ARGS>
 ```
+
+The unified `deploy-testnet.js` script deploys all 10 contracts in dependency order and saves addresses to `deployed-addresses.json`.
 
 ### BOT Chain Mainnet
 
@@ -538,19 +577,24 @@ Phase 1:
   1. AgentRegistry (0.1 BOT min bond)
   2. ReputationRegistry (initial attester + threshold)
 
+Phase 2:
+  3. Groth16 Verifier (SuccessRate)
+  4. Groth16 Verifier (ZeroViolations)
+  5. Groth16 Verifier (ActionCount)
+  6. ZKBehaviorVerifier (wraps 3 verifiers)
+
 Phase 3:
-  3. LiquidityPool
-  4. SessionKeyManager
-  5. Groth16 Verifier (SuccessRate)
-  6. Groth16 Verifier (ZeroViolations)
-  7. Groth16 Verifier (ActionCount)
-  8. ZKBehaviorVerifier (wraps 3 verifiers)
+  7. LiquidityPool
+  8. SessionKeyManager
   9. CreditLine (links Pool + Reputation + ZK)
   10. PolicyVault (links SessionKey + Credit + Pool)
-  11. Wire: LiquidityPool.setAuthorizedCaller → CreditLine
+
+Wiring:
+  11. LiquidityPool.setAuthorizedCaller → CreditLine
+  12. CreditLine.setPolicyVault → PolicyVault
 ```
 
-`deploy-phase3.js` handles steps 3–11 automatically.
+`deploy-testnet.js` handles all steps automatically. `deploy-phase3.js` handles steps 7–12.
 
 ---
 
@@ -598,7 +642,7 @@ Open any HTML in a browser to view the pitch graphics. Each is self-contained (i
 | Event indexer | High | Listen to ReputationRegistry, CreditLine, PolicyVault events; store in Postgres |
 | Dashboard (Next.js) | High | Agent leaderboard by score/tier, credit utilization graphs, live proof verification demo |
 | Agent SDK (TypeScript) | Medium | Client library: register, request credit, generate proof, execute spend |
-| Testnet deployment | High | Deploy to BOT Chain Testnet, verify on explorer, test with faucet |
+| Testnet deployment | High | Deploy to BOT Chain Testnet (Bohr, chain ID 968), verify on scan.bohr.life |
 | Documentation | Medium | API reference for each contract, integration guide for agent developers |
 
 ### Future Enhancements
@@ -621,8 +665,8 @@ Open any HTML in a browser to view the pitch graphics. Each is self-contained (i
 | Contracts | Solidity 0.8.26, OpenZeppelin v5.6, Hardhat, EVM target: cancun |
 | Circuits | Circom 2.2.3, Groth16 (snarkjs 0.7.6), Poseidon (circomlib), PTAU 16 |
 | Off-chain | Node.js, ethers.js v6, EIP-712 typed data signing |
-| Chain | BOT Chain (EVM PoSA) — Testnet (513100) + Mainnet (1891) |
-| Testing | Hardhat Network, 75 tests, ZK proof generation (~7s each) |
+| Chain | BOT Chain (EVM PoSA) — Testnet Bohr (968) + Testnet Legacy (513100) + Mainnet (1891) |
+| Testing | Hardhat Network, 78 tests, ZK proof generation (~7s each) |
 | Frontend | Next.js + wagmi + viem (Phase 4) |
 | Indexing | Event listener + Postgres (Phase 4) |
 
@@ -669,6 +713,7 @@ agentkredit/
 │   ├── deploy-credit-line.js
 │   ├── deploy-policy-vault.js
 │   ├── deploy-phase3.js           # Unified Phase 3 orchestrator
+│   ├── deploy-testnet.js          # Full testnet deployment (all phases + wiring)
 │   └── demo-credit-flow.js        # Full 10-step demo (deploy → earn → borrow → spend → repay)
 ├── demo/
 │   ├── title-card.html            # Video title card
@@ -681,6 +726,7 @@ agentkredit/
 │   ├── attestation-oracle/        # Off-chain attestation service
 │   └── zk-prover/                 # Local ZK proof generation
 ├── build/                         # Circuit compilation artifacts
+├── deployed-addresses.json        # Auto-generated by deploy scripts (gitignored)
 ├── hardhat.config.js
 ├── package.json
 ├── AgentKredit_Product_Description.md

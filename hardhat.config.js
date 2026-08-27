@@ -25,6 +25,12 @@ module.exports = {
       accounts: [DEPLOYER_PRIVATE_KEY],
       gasPrice: 1000000000, // 1 gwei
     },
+    bohrTestnet: {
+      url: "https://rpc.bohr.life",
+      chainId: 968,
+      accounts: [DEPLOYER_PRIVATE_KEY],
+      gasPrice: 1000000000, // 1 gwei
+    },
     botchainMainnet: {
       url: "https://rpc.botchain.ai",
       chainId: 1891,
@@ -35,6 +41,7 @@ module.exports = {
   etherscan: {
     apiKey: {
       botchainTestnet: process.env.BOTCHAIN_EXPLORER_API_KEY || "",
+      bohrTestnet: process.env.BOHR_EXPLORER_API_KEY || "",
     },
     customChains: [
       {
@@ -43,6 +50,14 @@ module.exports = {
         urls: {
           apiURL: "https://botchaintestnet.ai/api",
           browserURL: "https://botchaintestnet.ai",
+        },
+      },
+      {
+        network: "bohrTestnet",
+        chainId: 968,
+        urls: {
+          apiURL: "https://scan.bohr.life/api",
+          browserURL: "https://scan.bohr.life",
         },
       },
     ],
