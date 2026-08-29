@@ -29,7 +29,7 @@ module.exports = {
       url: "https://rpc.bohr.life",
       chainId: 968,
       accounts: [DEPLOYER_PRIVATE_KEY],
-      gasPrice: 1000000000, // 1 gwei
+      gasPrice: 20000000000, // 20 gwei
     },
     botchainMainnet: {
       url: "https://rpc.botchain.ai",
