@@ -12,3 +12,4 @@ circuits/*_prepared.ptau
 services/zk-prover/node_modules/
 services/attestation-oracle/node_modules/
 deployed-addresses.json
+references/
